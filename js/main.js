@@ -11,7 +11,6 @@ function Sudoku(state) {
 function DFS(problem) {
 	fringe = [problem]
 	while (fringe.length){
-		debugger
 		state = fringe.pop();
 		if (state.isFinalState())
 			return state;
