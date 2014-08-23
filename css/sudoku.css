@@ -1,4 +1,6 @@
-
+#sudoku-container {
+  text-align: center;
+}
 .row {
   border-top: 1px solid black;
   width: 460px;
