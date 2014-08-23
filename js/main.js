@@ -54,7 +54,7 @@ function Sudoku(state) {
         col = this._getCol(empty),
         box = this._getBox(empty);
     _.remove(values, function(v){
-      return _.indexOf(row, v) != -1 || _.indexOf(col, v) != -1 || _.indexOf(box, v) != -1;
+      return _.indexOf(_.union(row, col, box), v) != -1;
     });
     return values;
   }
@@ -62,11 +62,18 @@ function Sudoku(state) {
   this._getSuccessor = function(empty, val) {
     var successor = new Sudoku(_.cloneDeep(this.state));
     successor.state[empty[0]][empty[1]] = val;
-    return successor;
+    return successor
   }
 
   this.printState = function() {
-    $('#sudoku-container').text(this.state);
+    var html = _.reduce(this.state, function(agg, row) {
+      var rowString = _.reduce(row, function(agg, el) {
+        var elString = el? '' + el : '&nbsp;';
+        return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
+      }, '');
+      return agg + '<div class="row">' + rowString + '</div>';
+    }, '');
+    $('#sudoku-container').html(html);
   }
 
   this.isFinalState = function() {
@@ -102,5 +109,6 @@ var startState = new Sudoku(
    [2, null, null, 1, 5, null, null, null, null]]
 );
 
-var solution = DFS(startState)
-console.log(solution);
+startState.printState();
+// var solution = DFS(startState);
+
