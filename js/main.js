@@ -1,3 +1,5 @@
+var counter = 0;
+
 function Sudoku(state) {
   this.state = state;
   this.getSuccessors = function() {
@@ -73,6 +75,8 @@ function Sudoku(state) {
       }, '');
       return agg + '<div class="row">' + rowString + '</div>';
     }, '');
+
+    counter += 1;
     $('#sudoku-container').html(html);
   }
 
@@ -83,16 +87,19 @@ function Sudoku(state) {
 
 function DFS(startState) {
   fringe = [startState]
-  while (fringe.length){
-    state = fringe.pop();
-    state.printState();
-    if (state.isFinalState())
-      return state;
-    else {
-      successors = state.getSuccessors();
-      fringe = fringe.concat(successors);
+  
+  setInterval( function() {
+    if (fringe.length){
+      state = fringe.pop();
+      state.printState();
+      if (state.isFinalState())
+        return state;
+      else {
+        successors = state.getSuccessors();
+        fringe = fringe.concat(successors);
+      }
     }
-  }
+  }, 1);
 
   throw("No solution");
 }
@@ -110,5 +117,5 @@ var startState = new Sudoku(
 );
 
 startState.printState();
-// var solution = DFS(startState);
+var solution = DFS(startState);
 
