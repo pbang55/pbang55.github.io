@@ -77,6 +77,10 @@ function Sudoku(state) {
     }, '');
 
     counter += 1;
+    html = _.template('<%= html %><p>Nodes Explored: <%= counter %></p>')({
+      html: html,
+      counter: counter
+    });
     $('#sudoku-container').html(html);
   }
 
@@ -86,22 +90,27 @@ function Sudoku(state) {
 }
 
 function DFS(startState) {
-  fringe = [startState]
-  
-  setInterval( function() {
-    if (fringe.length){
-      state = fringe.pop();
-      state.printState();
-      if (state.isFinalState())
-        return state;
+  var fringe = [startState]
+  var id = setInterval( function(){
+    for (var x = 0; x < 100; x += 1) {
+      if (fringe.length){
+        state = fringe.pop();
+        state.printState();
+        if (state.isFinalState()){
+          clearInterval(id);
+          return
+        }
+        else {
+          successors = state.getSuccessors();
+          fringe = fringe.concat(successors);
+        }
+      }
       else {
-        successors = state.getSuccessors();
-        fringe = fringe.concat(successors);
+        clearInterval(id);
+        break;
       }
     }
   }, 1);
-
-  throw("No solution");
 }
 
 var startState = new Sudoku(
