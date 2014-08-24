@@ -1,130 +1,132 @@
-var counter = 0;
+(function(){
+  var nodesExplored = 0;
 
-function Sudoku(state) {
-  this.state = state;
-  this.getSuccessors = function() {
-    var empty = this._getFirstEmpty();
-    var possibleVals = this._getPossibleVals(empty);
+  function Sudoku(state) {
+    this.state = state;
+    this.getSuccessors = function() {
+      var empty = this._getFirstEmpty();
+      var possibleVals = this._getPossibleVals(empty);
 
-    var successors = [];
-    for (var i = 0; i < possibleVals.length; i += 1) {
-      var val = possibleVals[i];
-      var successor = this._getSuccessor(empty, val);
-      successors.push(successor);
-    }
-    return successors.reverse();
-  }
-
-  this._getFirstEmpty = function() {
-    for (var row = 0; row < 9; row += 1){
-      for (var col = 0; col < 9; col += 1) {
-        if (this.state[row][col] === null)
-          return [row, col];
+      var successors = [];
+      for (var i = 0; i < possibleVals.length; i += 1) {
+        var val = possibleVals[i];
+        var successor = this._getSuccessor(empty, val);
+        successors.push(successor);
       }
+      return successors.reverse();
     }
-    return null;
-  }
 
-  this._getRow = function(empty) {
-    var x = empty[0];
-    return this.state[x];
-  }
-
-  this._getCol = function(empty) {
-    var y = empty[1];
-    return _.map(this.state, function(row){ return row[y] });
-  }
-
-  this._getBox = function(empty) {
-    var rowMin = Math.floor(empty[0] / 3) * 3,
-        rowMax = rowMin + 3,
-        colMin = Math.floor(empty[1] / 3) * 3,
-        colMax = colMin + 3;
-
-    var box = [];
-    for (var x = rowMin; x < rowMax; x += 1) {
-      for (var y = colMin; y < colMax; y += 1) {
-        box.push(this.state[x][y]);
+    this._getFirstEmpty = function() {
+      for (var row = 0; row < 9; row += 1){
+        for (var col = 0; col < 9; col += 1) {
+          if (this.state[row][col] === null)
+            return [row, col];
+        }
       }
+      return null;
     }
-    return box;
-  }
 
-  this._getPossibleVals = function(empty) {
-    var values = _.range(1,10),
-        row = this._getRow(empty),
-        col = this._getCol(empty),
-        box = this._getBox(empty);
-    _.remove(values, function(v){
-      return _.indexOf(_.union(row, col, box), v) != -1;
-    });
-    return values;
-  }
+    this._getRow = function(empty) {
+      var x = empty[0];
+      return this.state[x];
+    }
 
-  this._getSuccessor = function(empty, val) {
-    var successor = new Sudoku(_.cloneDeep(this.state));
-    successor.state[empty[0]][empty[1]] = val;
-    return successor
-  }
+    this._getCol = function(empty) {
+      var y = empty[1];
+      return _.map(this.state, function(row){ return row[y] });
+    }
 
-  this.printState = function() {
-    var html = _.reduce(this.state, function(agg, row) {
-      var rowString = _.reduce(row, function(agg, el) {
-        var elString = el? '' + el : '&nbsp;';
-        return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
+    this._getBox = function(empty) {
+      var rowMin = Math.floor(empty[0] / 3) * 3,
+          rowMax = rowMin + 3,
+          colMin = Math.floor(empty[1] / 3) * 3,
+          colMax = colMin + 3;
+
+      var box = [];
+      for (var x = rowMin; x < rowMax; x += 1) {
+        for (var y = colMin; y < colMax; y += 1) {
+          box.push(this.state[x][y]);
+        }
+      }
+      return box;
+    }
+
+    this._getPossibleVals = function(empty) {
+      var values = _.range(1,10),
+          row = this._getRow(empty),
+          col = this._getCol(empty),
+          box = this._getBox(empty);
+      _.remove(values, function(v){
+        return _.indexOf(_.union(row, col, box), v) != -1;
+      });
+      return values;
+    }
+
+    this._getSuccessor = function(empty, val) {
+      var successor = new Sudoku(_.cloneDeep(this.state));
+      successor.state[empty[0]][empty[1]] = val;
+      return successor
+    }
+
+    this.printState = function() {
+      var html = _.reduce(this.state, function(agg, row) {
+        var rowString = _.reduce(row, function(agg, el) {
+          var elString = el? '' + el : '&nbsp;';
+          return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
+        }, '');
+        return agg + '<div class="row">' + rowString + '</div>';
       }, '');
-      return agg + '<div class="row">' + rowString + '</div>';
-    }, '');
 
-    counter += 1;
-    html = _.template('<%= html %><p>Nodes Explored: <%= counter %></p>')({
-      html: html,
-      counter: counter
-    });
-    $('#sudoku-container').html(html);
+      nodesExplored += 1;
+      html = _.template('<%= html %><p>Nodes Explored: <%= nodesExplored %></p>')({
+        html: html,
+        nodesExplored: nodesExplored
+      });
+      $('#sudoku-container').html(html);
+    }
+
+    this.isFinalState = function() {
+      return this._getFirstEmpty() === null;
+    }
   }
 
-  this.isFinalState = function() {
-    return this._getFirstEmpty() === null;
-  }
-}
-
-function DFS(startState) {
-  var fringe = [startState]
-  var id = setInterval( function(){
-    for (var x = 0; x < 100; x += 1) {
-      if (fringe.length){
-        state = fringe.pop();
-        state.printState();
-        if (state.isFinalState()){
-          clearInterval(id);
-          return
+  function DFS(startState) {
+    var fringe = [startState]
+    var id = setInterval( function(){
+      for (var x = 0; x < 100; x += 1) {
+        if (fringe.length){
+          state = fringe.pop();
+          state.printState();
+          if (state.isFinalState()){
+            clearInterval(id);
+            return
+          }
+          else {
+            successors = state.getSuccessors();
+            fringe = fringe.concat(successors);
+          }
         }
         else {
-          successors = state.getSuccessors();
-          fringe = fringe.concat(successors);
+          clearInterval(id);
+          break;
         }
       }
-      else {
-        clearInterval(id);
-        break;
-      }
-    }
-  }, 1);
-}
+    }, 100);
+  }
 
-var startState = new Sudoku(
-  [[null, null, null, null, null, 8, 9, null, 2],
-   [6, null, 4, 3, null, null, null, null, null],
-   [null, null, null, 5, 9, null, null, null, null],
-   [null, null, 5, 7, null, 3, null, null, 9],
-   [7, null, null, null, 4, null, null, null, null],
-   [null, null, 9, null, null, null, 3, null, 5],
-   [null, 8, null, null, null, 4, null, null, null],
-   [null, 4, 1, null, null, null, null, 3, null],
-   [2, null, null, 1, 5, null, null, null, null]]
-);
+  var startState = new Sudoku(
+    [[null, null, null, null, null, 8, 9, null, 2],
+     [6, null, 4, 3, null, null, null, null, null],
+     [null, null, null, 5, 9, null, null, null, null],
+     [null, null, 5, 7, null, 3, null, null, 9],
+     [7, null, null, null, 4, null, null, null, null],
+     [null, null, 9, null, null, null, 3, null, 5],
+     [null, 8, null, null, null, 4, null, null, null],
+     [null, 4, 1, null, null, null, null, 3, null],
+     [2, null, null, 1, 5, null, null, null, null]]
+  );
 
-startState.printState();
-var solution = DFS(startState);
+  startState.printState();
+  var solution = DFS(startState);
 
+})();
