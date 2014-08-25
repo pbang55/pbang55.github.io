@@ -6,6 +6,27 @@
     speedSelector: '#speed-selector'
   }
 
+  var sudokuBoards = {
+    board1: [[null, null, null, null, null, 8, 9, null, 2],
+       [6, null, 4, 3, null, null, null, null, null],
+       [null, null, null, 5, 9, null, null, null, null],
+       [null, null, 5, 7, null, 3, null, null, 9],
+       [7, null, null, null, 4, null, null, null, null],
+       [null, null, 9, null, null, null, 3, null, 5],
+       [null, 8, null, null, null, 4, null, null, null],
+       [null, 4, 1, null, null, null, null, 3, null],
+       [2, null, null, 1, 5, null, null, null, null]],
+    board2: [[1, null, null, null, null, null, 4, null, null],
+       [7, 3, 9, null, 8, null, 2, null, null],
+       [6, null, 4, 3, null, null, null, null, null],
+       [null, null, 2, 5, null, null, 7, null, 9],
+       [null, 9, 1, 7, null, 4, 3, 6, null],
+       [8, null, 3, null, null, 6, 5, null, null],
+       [null, null, null, null, null, 7, 6, null, 3],
+       [null, null, 7, null, 6, null, 8, 9, 2],
+       [null, null, 6, null, null, null, null, null, 5]],
+  }
+
   function Sudoku(board) {
 
     this.__init__ = function() {
@@ -156,17 +177,7 @@
 
     $(ui.speedSelector).on('input', updateSpeed );
 
-    var startState = new Sudoku(
-      [[null, null, null, null, null, 8, 9, null, 2],
-       [6, null, 4, 3, null, null, null, null, null],
-       [null, null, null, 5, 9, null, null, null, null],
-       [null, null, 5, 7, null, 3, null, null, 9],
-       [7, null, null, null, 4, null, null, null, null],
-       [null, null, 9, null, null, null, 3, null, 5],
-       [null, 8, null, null, null, 4, null, null, null],
-       [null, 4, 1, null, null, null, null, 3, null],
-       [2, null, null, 1, 5, null, null, null, null]]
-    );
+    var startState = new Sudoku(sudokuBoards.board2);
     var DFSModule = new DepthFirstSearchModule(startState);
     DFSModule.search();
   }
