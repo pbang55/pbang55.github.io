@@ -1,6 +1,6 @@
 (function($, _){
-  function Sudoku(state) {
-    this.state = state;
+  function Sudoku(board) {
+    this.board = board;
     this.getSuccessors = function() {
       var empty = this._getFirstEmpty();
       var possibleVals = this._getPossibleVals(empty);
@@ -17,7 +17,7 @@
     this._getFirstEmpty = function() {
       for (var row = 0; row < 9; row += 1){
         for (var col = 0; col < 9; col += 1) {
-          if (this.state[row][col] === null)
+          if (this.board[row][col] === null)
             return [row, col];
         }
       }
@@ -26,12 +26,12 @@
 
     this._getRow = function(empty) {
       var x = empty[0];
-      return this.state[x];
+      return this.board[x];
     }
 
     this._getCol = function(empty) {
       var y = empty[1];
-      return _.map(this.state, function(row){ return row[y] });
+      return _.map(this.board, function(row){ return row[y] });
     }
 
     this._getBox = function(empty) {
@@ -43,7 +43,7 @@
       var box = [];
       for (var x = rowMin; x < rowMax; x += 1) {
         for (var y = colMin; y < colMax; y += 1) {
-          box.push(this.state[x][y]);
+          box.push(this.board[x][y]);
         }
       }
       return box;
@@ -61,8 +61,8 @@
     }
 
     this._getSuccessor = function(empty, val) {
-      var successor = new Sudoku(_.cloneDeep(this.state));
-      successor.state[empty[0]][empty[1]] = val;
+      var successor = new Sudoku(_.cloneDeep(this.board));
+      successor.board[empty[0]][empty[1]] = val;
       return successor
     }
 
@@ -92,16 +92,16 @@
       for (var x = 0; x < 1000; x += 1) {
         var result = this.exploreNode();
         if (result === "solved" || result === "failed") {
-          this.printState(this.currentState.state);
+          this.printState(this.currentState);
           clearInterval(this.id);
           return;
         }
       }
-      this.printState(this.currentState.state);
+      this.printState(this.currentState);
     }
 
     this.printState = function(state) {
-      var html = _.reduce(state, function(agg, row) {
+      var html = _.reduce(state.board, function(agg, row) {
         var rowString = _.reduce(row, function(agg, el) {
           var elString = el? '' + el : '&nbsp;';
           return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
