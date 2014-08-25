@@ -71,9 +71,9 @@
     }
   }
 
-  function DFS(startState) {
+  function DepthFirstSearchModule(startState) {
 
-    this.exploreNode = function(){
+    this._exploreNode = function(){
       if (this.fringe.length){
         this.currentState = this.fringe.pop();
         this.nodesExplored += 1;
@@ -88,20 +88,22 @@
       else return "failed";
     }
 
-    this.exploreNodes = function(){
-      var numberOfNodes = parseInt( $('#speed-selector').val() );
+    this._exploreNodes = function(){
+      var speed = parseInt( $('#speed-selector').val() );
+      var numberOfNodes = speed * this.INTERVAL / 1000;
       for (var x = 0; x < numberOfNodes; x += 1) {
-        var result = this.exploreNode();
+
+        var result = this._exploreNode();
         if (result === "solved" || result === "failed") {
-          this.printState(this.currentState);
+          this._printState(this.currentState);
           clearInterval(this.id);
           return;
         }
       }
-      this.printState(this.currentState);
+      this._printState(this.currentState);
     }
 
-    this.printState = function(state) {
+    this._printState = function(state) {
       var html = _.reduce(state.board, function(agg, row) {
         var rowString = _.reduce(row, function(agg, el) {
           var elString = el? '' + el : '&nbsp;';
@@ -117,11 +119,13 @@
       $('#sudoku-container').html(html);
     }
 
-    this.fringe = [startState];
-    this.currentState = null;
-    this.nodesExplored = 0;
-    this.id = setInterval( this.exploreNodes, 100 );
-
+    this.search = function() {
+      this.fringe = [startState];
+      this.currentState = null;
+      this.nodesExplored = 0;
+      this.INTERVAL = 100;
+      this.id = setInterval( this._exploreNodes.bind(this), this.INTERVAL );
+    }
   }
 
   function updateSpeed(){
@@ -129,7 +133,7 @@
     $('#speed').text(speed);
   }
 
-  function initialize() {å
+  function initialize() {
     $('#speed-selector').change( updateSpeed );
 
     var startState = new Sudoku(
@@ -144,7 +148,8 @@
        [2, null, null, 1, 5, null, null, null, null]]
     );
 
-    DFS(startState);
+    DFSModule = new DepthFirstSearchModule(startState);
+    DFSModule.search();
   }
 
   initialize();
