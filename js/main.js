@@ -119,20 +119,41 @@
     }
 
     this._printState = function(state) {
-      var html = _.reduce(state.board, function(agg, row) {
-        var rowString = _.reduce(row, function(agg, el) {
-          var elString = el.num? '' + el.num : '&nbsp;';
-          elString = el.original? '<strong>' + elString + '</strong>' : elString;
-          return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
-        }, '');
-        return agg + '<div class="row">' + rowString + '</div>';
-      }, '');
+      var board = state.board;
+      var $html = $('<div></div>').addClass('sudoku');
+      for (var row = 0; row < 9; row += 1) {
+        var $rowHtml = $('<div></div>').addClass('row' + row);
+        for (var col = 0; col < 9; col += 1) {
+          var num = board[row][col].num
+          var elString = num ? num : '&nbsp;';
+          var $blockHtml = $('<div></div>').addClass('block')
+                                           .addClass('col' + col)
+                                           .html('<p>' + elString + '</p>');
+          $rowHtml.append($blockHtml);
+        }
+        $html.append($rowHtml);
+      }
 
-      html = _.template('<%= html %><p>Nodes Explored: <%= nodesExplored %></p>')({
-        html: html,
-        nodesExplored: this.nodesExplored
-      });
-      $('#sudoku-container').html(html);
+      $nodesHtml = $('<div></div>').addClass('nodes-explored')
+                                   .html('<p>Nodes Explored: ' + this.nodesExplored + '</p>');
+
+      $html.append($nodesHtml);
+      $('#sudoku-container').html($html);
+
+      // var html = _.reduce(state.board, function(agg, row) {
+      //   var rowString = _.reduce(row, function(agg, el) {
+      //     var elString = el.num? '' + el.num : '&nbsp;';
+      //     elString = el.original? '<strong>' + elString + '</strong>' : elString;
+      //     return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
+      //   }, '');
+      //   return agg + '<div class="row">' + rowString + '</div>';
+      // }, '');
+
+      // html = _.template('<%= html %><p>Nodes Explored: <%= nodesExplored %></p>')({
+      //   html: html,
+      //   nodesExplored: this.nodesExplored
+      // });
+      // $('#sudoku-container').html(html);
     }
 
     this.search = function() {

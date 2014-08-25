@@ -1,11 +1,7 @@
 #sudoku-container {
   text-align: center;
-  width: 460px;
+  width: 464px;
   margin: auto;
-}
-.row {
-  border-top: 1px solid black;
-  width: 460px;
 }
 
 .block {
@@ -13,15 +9,26 @@
   height: 50px;
   display: inline-block;
   border-left: 1px solid black;
+  border-top: 1px solid black;
 }
 
-.block:last-of-type {
-  border-right: 1px solid black;
+.row0 .block, .row3 .block, .row6 .block {
+  border-top: 2px solid black;
 }
 
-.row:last-of-type {
-  border-bottom: 1px solid black;
+.row8 .block {
+  border-bottom: 2px solid black;
 }
+
+.col0, .col3, .col6 {
+  border-left: 2px solid black;
+}
+
+.col8 {
+  border-right: 2px solid black;
+}
+
+
 
 #speed-selector-container {
   width: 460px;
