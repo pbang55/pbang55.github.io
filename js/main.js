@@ -89,7 +89,8 @@
     }
 
     this.exploreNodes = function(){
-      for (var x = 0; x < 1000; x += 1) {
+      var numberOfNodes = parseInt( $('#speed-selector').val(), 10 );
+      for (var x = 0; x < numberOfNodes; x += 1) {
         var result = this.exploreNode();
         if (result === "solved" || result === "failed") {
           this.printState(this.currentState);
@@ -119,9 +120,10 @@
     this.fringe = [startState];
     this.currentState = null;
     this.nodesExplored = 0;
-    this.id = setInterval( this.exploreNodes, 5);
+    this.id = setInterval( this.exploreNodes, 100);
 
   }
+
 
   var startState = new Sudoku(
     [[null, null, null, null, null, 8, 9, null, 2],
