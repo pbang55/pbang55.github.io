@@ -1,4 +1,4 @@
-(function(){
+(function($, _){
   var nodesExplored = 0;
 
   function Sudoku(state) {
@@ -91,27 +91,37 @@
   }
 
   function DFS(startState) {
-    var fringe = [startState]
-    var id = setInterval( function(){
-      for (var x = 0; x < 100; x += 1) {
-        if (fringe.length){
-          state = fringe.pop();
-          state.printState();
-          if (state.isFinalState()){
-            clearInterval(id);
-            return
-          }
-          else {
-            successors = state.getSuccessors();
-            fringe = fringe.concat(successors);
-          }
+
+    function exploreNode(){
+      if (fringe.length){
+        currentState = fringe.pop();
+        if (currentState.isFinalState()){
+          return "solved";
         }
         else {
-          clearInterval(id);
-          break;
+          successors = currentState.getSuccessors();
+          fringe = fringe.concat(successors);
         }
       }
-    }, 100);
+      else return "failed";
+    }
+
+    function exploreNodes(){
+      for (var x = 0; x < 100; x += 1) {
+        var result = exploreNode();
+        if (result === "solved" || result === "failed") {
+          currentState.printState();
+          clearInterval(id);
+          return;
+        }
+      }
+      currentState.printState();
+    }
+
+    var fringe = [startState];
+    var currentState = null;
+    var id = setInterval( exploreNodes, 1);
+
   }
 
   var startState = new Sudoku(
@@ -129,4 +139,4 @@
   startState.printState();
   var solution = DFS(startState);
 
-})();
+})(jQuery, _);
