@@ -122,6 +122,7 @@
       var html = _.reduce(state.board, function(agg, row) {
         var rowString = _.reduce(row, function(agg, el) {
           var elString = el.num? '' + el.num : '&nbsp;';
+          elString = el.original? '<strong>' + elString + '</strong>' : elString;
           return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
         }, '');
         return agg + '<div class="row">' + rowString + '</div>';
