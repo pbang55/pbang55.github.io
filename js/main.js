@@ -92,35 +92,35 @@
 
   function DFS(startState) {
 
-    function exploreNode(){
-      if (fringe.length){
-        currentState = fringe.pop();
-        if (currentState.isFinalState()){
+    this.exploreNode = function(){
+      if (this.fringe.length){
+        this.currentState = this.fringe.pop();
+        if (this.currentState.isFinalState()){
           return "solved";
         }
         else {
-          successors = currentState.getSuccessors();
-          fringe = fringe.concat(successors);
+          successors = this.currentState.getSuccessors();
+          this.fringe = this.fringe.concat(successors);
         }
       }
       else return "failed";
     }
 
-    function exploreNodes(){
+    this.exploreNodes = function(){
       for (var x = 0; x < 100; x += 1) {
-        var result = exploreNode();
+        var result = this.exploreNode();
         if (result === "solved" || result === "failed") {
-          currentState.printState();
-          clearInterval(id);
+          this.currentState.printState();
+          clearInterval(this.id);
           return;
         }
       }
-      currentState.printState();
+      this.currentState.printState();
     }
 
-    var fringe = [startState];
-    var currentState = null;
-    var id = setInterval( exploreNodes, 1);
+    this.fringe = [startState];
+    this.currentState = null;
+    this.id = setInterval( this.exploreNodes, 5);
 
   }
 
