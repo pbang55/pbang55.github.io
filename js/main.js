@@ -1,6 +1,4 @@
 (function($, _){
-  var nodesExplored = 0;
-
   function Sudoku(state) {
     this.state = state;
     this.getSuccessors = function() {
@@ -68,23 +66,6 @@
       return successor
     }
 
-    this.printState = function() {
-      var html = _.reduce(this.state, function(agg, row) {
-        var rowString = _.reduce(row, function(agg, el) {
-          var elString = el? '' + el : '&nbsp;';
-          return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
-        }, '');
-        return agg + '<div class="row">' + rowString + '</div>';
-      }, '');
-
-      nodesExplored += 1;
-      html = _.template('<%= html %><p>Nodes Explored: <%= nodesExplored %></p>')({
-        html: html,
-        nodesExplored: nodesExplored
-      });
-      $('#sudoku-container').html(html);
-    }
-
     this.isFinalState = function() {
       return this._getFirstEmpty() === null;
     }
@@ -95,6 +76,7 @@
     this.exploreNode = function(){
       if (this.fringe.length){
         this.currentState = this.fringe.pop();
+        this.nodesExplored += 1;
         if (this.currentState.isFinalState()){
           return "solved";
         }
@@ -107,19 +89,36 @@
     }
 
     this.exploreNodes = function(){
-      for (var x = 0; x < 100; x += 1) {
+      for (var x = 0; x < 1000; x += 1) {
         var result = this.exploreNode();
         if (result === "solved" || result === "failed") {
-          this.currentState.printState();
+          this.printState(this.currentState.state);
           clearInterval(this.id);
           return;
         }
       }
-      this.currentState.printState();
+      this.printState(this.currentState.state);
+    }
+
+    this.printState = function(state) {
+      var html = _.reduce(state, function(agg, row) {
+        var rowString = _.reduce(row, function(agg, el) {
+          var elString = el? '' + el : '&nbsp;';
+          return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
+        }, '');
+        return agg + '<div class="row">' + rowString + '</div>';
+      }, '');
+
+      html = _.template('<%= html %><p>Nodes Explored: <%= nodesExplored %></p>')({
+        html: html,
+        nodesExplored: this.nodesExplored
+      });
+      $('#sudoku-container').html(html);
     }
 
     this.fringe = [startState];
     this.currentState = null;
+    this.nodesExplored = 0;
     this.id = setInterval( this.exploreNodes, 5);
 
   }
@@ -136,7 +135,6 @@
      [2, null, null, 1, 5, null, null, null, null]]
   );
 
-  startState.printState();
   var solution = DFS(startState);
 
 })(jQuery, _);
