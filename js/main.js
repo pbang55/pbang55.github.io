@@ -134,7 +134,7 @@
   }
 
   function initialize() {
-    $('#speed-selector').change( updateSpeed );
+    $('#speed-selector').on('input', updateSpeed );
 
     var startState = new Sudoku(
       [[null, null, null, null, null, 8, 9, null, 2],
