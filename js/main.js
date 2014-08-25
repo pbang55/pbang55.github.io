@@ -89,7 +89,7 @@
     }
 
     this.exploreNodes = function(){
-      var numberOfNodes = parseInt( $('#speed-selector').val(), 10 );
+      var numberOfNodes = parseInt( $('#speed-selector').val() );
       for (var x = 0; x < numberOfNodes; x += 1) {
         var result = this.exploreNode();
         if (result === "solved" || result === "failed") {
@@ -120,23 +120,33 @@
     this.fringe = [startState];
     this.currentState = null;
     this.nodesExplored = 0;
-    this.id = setInterval( this.exploreNodes, 100);
+    this.id = setInterval( this.exploreNodes, 100 );
 
   }
 
+  function updateSpeed(){
+    var speed = $('#speed-selector').val();
+    $('#speed').text(speed);
+  }
 
-  var startState = new Sudoku(
-    [[null, null, null, null, null, 8, 9, null, 2],
-     [6, null, 4, 3, null, null, null, null, null],
-     [null, null, null, 5, 9, null, null, null, null],
-     [null, null, 5, 7, null, 3, null, null, 9],
-     [7, null, null, null, 4, null, null, null, null],
-     [null, null, 9, null, null, null, 3, null, 5],
-     [null, 8, null, null, null, 4, null, null, null],
-     [null, 4, 1, null, null, null, null, 3, null],
-     [2, null, null, 1, 5, null, null, null, null]]
-  );
+  function initialize() {å
+    $('#speed-selector').change( updateSpeed );
 
-  var solution = DFS(startState);
+    var startState = new Sudoku(
+      [[null, null, null, null, null, 8, 9, null, 2],
+       [6, null, 4, 3, null, null, null, null, null],
+       [null, null, null, 5, 9, null, null, null, null],
+       [null, null, 5, 7, null, 3, null, null, 9],
+       [7, null, null, null, 4, null, null, null, null],
+       [null, null, 9, null, null, null, 3, null, 5],
+       [null, 8, null, null, null, 4, null, null, null],
+       [null, 4, 1, null, null, null, null, 3, null],
+       [2, null, null, 1, 5, null, null, null, null]]
+    );
+
+    DFS(startState);
+  }
+
+  initialize();
 
 })(jQuery, _);
