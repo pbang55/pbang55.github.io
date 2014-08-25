@@ -1,6 +1,18 @@
 (function($, _){
   function Sudoku(board) {
-    this.board = board;
+
+    this.__init__ = function() {
+      this.board = _.map(board, function(row){
+        return _.map(row, function(num){
+          return {
+            num: num,
+            original: true
+          }
+        })
+      })
+    };
+    this.__init__();
+
     this.getSuccessors = function() {
       var empty = this._getFirstEmpty();
       var possibleVals = this._getPossibleVals(empty);
@@ -17,33 +29,33 @@
     this._getFirstEmpty = function() {
       for (var row = 0; row < 9; row += 1){
         for (var col = 0; col < 9; col += 1) {
-          if (this.board[row][col] === null)
-            return [row, col];
+          if (this.board[row][col].num === null)
+            return {row: row, col: col};
         }
       }
       return null;
     }
 
-    this._getRow = function(empty) {
-      var x = empty[0];
-      return this.board[x];
+    this._getRowNums = function(empty) {
+      var x = empty.row;
+      return _.map(this.board[x], function(el) { return el.num; });
     }
 
-    this._getCol = function(empty) {
-      var y = empty[1];
-      return _.map(this.board, function(row){ return row[y] });
+    this._getColNums = function(empty) {
+      var y = empty.col;
+      return _.map(this.board, function(row){ return row[y].num; });
     }
 
-    this._getBox = function(empty) {
-      var rowMin = Math.floor(empty[0] / 3) * 3,
+    this._getBoxNums = function(empty) {
+      var rowMin = Math.floor(empty.row / 3) * 3,
           rowMax = rowMin + 3,
-          colMin = Math.floor(empty[1] / 3) * 3,
+          colMin = Math.floor(empty.col / 3) * 3,
           colMax = colMin + 3;
 
       var box = [];
       for (var x = rowMin; x < rowMax; x += 1) {
         for (var y = colMin; y < colMax; y += 1) {
-          box.push(this.board[x][y]);
+          box.push(this.board[x][y].num);
         }
       }
       return box;
@@ -51,9 +63,9 @@
 
     this._getPossibleVals = function(empty) {
       var values = _.range(1,10),
-          row = this._getRow(empty),
-          col = this._getCol(empty),
-          box = this._getBox(empty);
+          row = this._getRowNums(empty),
+          col = this._getColNums(empty),
+          box = this._getBoxNums(empty);
       _.remove(values, function(v){
         return _.indexOf(_.union(row, col, box), v) != -1;
       });
@@ -61,8 +73,11 @@
     }
 
     this._getSuccessor = function(empty, val) {
-      var successor = new Sudoku(_.cloneDeep(this.board));
-      successor.board[empty[0]][empty[1]] = val;
+      var successor = _.cloneDeep(this);
+      successor.board[empty.row][empty.col] = {
+        num: val,
+        original: false
+      };
       return successor
     }
 
@@ -106,7 +121,7 @@
     this._printState = function(state) {
       var html = _.reduce(state.board, function(agg, row) {
         var rowString = _.reduce(row, function(agg, el) {
-          var elString = el? '' + el : '&nbsp;';
+          var elString = el.num? '' + el.num : '&nbsp;';
           return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
         }, '');
         return agg + '<div class="row">' + rowString + '</div>';
@@ -128,12 +143,12 @@
     }
   }
 
-  function updateSpeed(){
-    var speed = $('#speed-selector').val();
-    $('#speed').text(speed);
-  }
-
   function initialize() {
+    function updateSpeed(){
+      var speed = $('#speed-selector').val();
+      $('#speed').text(speed);
+    };
+
     $('#speed-selector').on('input', updateSpeed );
 
     var startState = new Sudoku(
@@ -147,8 +162,7 @@
        [null, 4, 1, null, null, null, null, 3, null],
        [2, null, null, 1, 5, null, null, null, null]]
     );
-
-    DFSModule = new DepthFirstSearchModule(startState);
+    var DFSModule = new DepthFirstSearchModule(startState);
     DFSModule.search();
   }
 
