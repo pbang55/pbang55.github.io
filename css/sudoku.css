@@ -22,3 +22,12 @@
 .row:last-of-type {
   border-bottom: 1px solid black;
 }
+
+#speed-selector-container {
+  width: 460px;
+  margin: auto;
+}
+
+#speed-selector {
+  width: 100%;
+}
