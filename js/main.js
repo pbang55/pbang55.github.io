@@ -2,14 +2,7 @@
   function Sudoku(board) {
 
     this.__init__ = function() {
-      this.board = _.map(board, function(row){
-        return _.map(row, function(num){
-          return {
-            num: num,
-            original: true
-          }
-        })
-      })
+      this.board = board;
     };
     this.__init__();
 
@@ -29,7 +22,7 @@
     this._getFirstEmpty = function() {
       for (var row = 0; row < 9; row += 1){
         for (var col = 0; col < 9; col += 1) {
-          if (this.board[row][col].num === null)
+          if (this.board[row][col] === null)
             return {row: row, col: col};
         }
       }
@@ -38,12 +31,12 @@
 
     this._getRowNums = function(empty) {
       var x = empty.row;
-      return _.map(this.board[x], function(el) { return el.num; });
+      return this.board[x];
     }
 
     this._getColNums = function(empty) {
       var y = empty.col;
-      return _.map(this.board, function(row){ return row[y].num; });
+      return _.map(this.board, function(row){ return row[y]; });
     }
 
     this._getBoxNums = function(empty) {
@@ -55,7 +48,7 @@
       var box = [];
       for (var x = rowMin; x < rowMax; x += 1) {
         for (var y = colMin; y < colMax; y += 1) {
-          box.push(this.board[x][y].num);
+          box.push(this.board[x][y]);
         }
       }
       return box;
@@ -74,10 +67,7 @@
 
     this._getSuccessor = function(empty, val) {
       var successor = _.cloneDeep(this);
-      successor.board[empty.row][empty.col] = {
-        num: val,
-        original: false
-      };
+      successor.board[empty.row][empty.col] = val;
       return successor
     }
 
@@ -124,7 +114,7 @@
       for (var row = 0; row < 9; row += 1) {
         var $rowHtml = $('<div></div>').addClass('row' + row);
         for (var col = 0; col < 9; col += 1) {
-          var num = board[row][col].num
+          var num = board[row][col]
           var elString = num ? num : '&nbsp;';
           var $blockHtml = $('<div></div>').addClass('block')
                                            .addClass('col' + col)
@@ -140,20 +130,6 @@
       $html.append($nodesHtml);
       $('#sudoku-container').html($html);
 
-      // var html = _.reduce(state.board, function(agg, row) {
-      //   var rowString = _.reduce(row, function(agg, el) {
-      //     var elString = el.num? '' + el.num : '&nbsp;';
-      //     elString = el.original? '<strong>' + elString + '</strong>' : elString;
-      //     return agg + '<div class="block">' + '<p>' + elString + '</p>' + '</div>';
-      //   }, '');
-      //   return agg + '<div class="row">' + rowString + '</div>';
-      // }, '');
-
-      // html = _.template('<%= html %><p>Nodes Explored: <%= nodesExplored %></p>')({
-      //   html: html,
-      //   nodesExplored: this.nodesExplored
-      // });
-      // $('#sudoku-container').html(html);
     }
 
     this.search = function() {
