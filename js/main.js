@@ -1,4 +1,11 @@
 (function($, _){
+
+  var ui = {
+    sudokuContainer: '#sudoku-container',
+    speed: '#speed',
+    speedSelector: '#speed-selector'
+  }
+
   function Sudoku(board) {
 
     this.__init__ = function() {
@@ -128,7 +135,7 @@
                                    .html('<p>Nodes Explored: ' + this.nodesExplored + '</p>');
 
       $html.append($nodesHtml);
-      $('#sudoku-container').html($html);
+      $(ui.sudokuContainer).html($html);
 
     }
 
@@ -143,11 +150,11 @@
 
   function initialize() {
     function updateSpeed(){
-      var speed = $('#speed-selector').val();
-      $('#speed').text(speed);
+      var speed = $(ui.speedSelector).val();
+      $(ui.speed).text(speed);
     };
 
-    $('#speed-selector').on('input', updateSpeed );
+    $(ui.speedSelector).on('input', updateSpeed );
 
     var startState = new Sudoku(
       [[null, null, null, null, null, 8, 9, null, 2],
