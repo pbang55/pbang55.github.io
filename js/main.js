@@ -2,29 +2,39 @@
 
   var ui = {
     sudokuContainer: '#sudoku-container',
-    speed: '#speed',
-    speedSelector: '#speed-selector'
+    speedText: '#speed',
+    speedSelector: '#speed-selector',
+    startButton: '#start-button'
   }
 
   var sudokuBoards = {
-    board1: [[null, null, null, null, null, 8, 9, null, 2],
-       [6, null, 4, 3, null, null, null, null, null],
-       [null, null, null, 5, 9, null, null, null, null],
-       [null, null, 5, 7, null, 3, null, null, 9],
-       [7, null, null, null, 4, null, null, null, null],
-       [null, null, 9, null, null, null, 3, null, 5],
-       [null, 8, null, null, null, 4, null, null, null],
-       [null, 4, 1, null, null, null, null, 3, null],
-       [2, null, null, 1, 5, null, null, null, null]],
-    board2: [[1, null, null, null, null, null, 4, null, null],
-       [7, 3, 9, null, 8, null, 2, null, null],
-       [6, null, 4, 3, null, null, null, null, null],
-       [null, null, 2, 5, null, null, 7, null, 9],
-       [null, 9, 1, 7, null, 4, 3, 6, null],
-       [8, null, 3, null, null, 6, 5, null, null],
-       [null, null, null, null, null, 7, 6, null, 3],
-       [null, null, 7, null, 6, null, 8, 9, 2],
-       [null, null, 6, null, null, null, null, null, 5]],
+    board1: [[1, null, null, null, null, null, 4, null, null],
+      [7, 3, 9, null, 8, null, 2, null, null],
+      [6, null, 4, 3, null, null, null, null, null],
+      [null, null, 2, 5, null, null, 7, null, 9],
+      [null, 9, 1, 7, null, 4, 3, 6, null],
+      [8, null, 3, null, null, 6, 5, null, null],
+      [null, null, null, null, null, 7, 6, null, 3],
+      [null, null, 7, null, 6, null, 8, 9, 2],
+      [null, null, 6, null, null, null, null, null, 5]],
+    board2: [[null, null, null, null, null, 8, 9, null, 2],
+      [6, null, 4, 3, null, null, null, null, null],
+      [null, null, null, 5, 9, null, null, null, null],
+      [null, null, 5, 7, null, 3, null, null, 9],
+      [7, null, null, null, 4, null, null, null, null],
+      [null, null, 9, null, null, null, 3, null, 5],
+      [null, 8, null, null, null, 4, null, null, null],
+      [null, 4, 1, null, null, null, null, 3, null],
+      [2, null, null, 1, 5, null, null, null, null]],
+    board3: [[null, 9, 8, null, null, null, 4, 7, null],
+      [null, null, null, null, null, null, 1, null, 5],
+      [null, null, null, 7, null, null, 9, 6, null],
+      [null, 6, null, null, null, null, null, 9, null],
+      [null, null, null, 1, null, null, null, 2, null],
+      [null, null, 3, null, 2, 4, null, null, null],
+      [4, null, null, null, null, null, null, null, 8],
+      [2, null, null, null, 5, 9, null, null, null],
+      [null, null, null, null, 7, null, null, 1, null]]
   }
 
   function Sudoku(board) {
@@ -169,15 +179,17 @@
     }
   }
 
+
+
   function initialize() {
-    function updateSpeed(){
-      var speed = $(ui.speedSelector).val();
-      $(ui.speed).text(speed);
+    function updateSpeedText(){
+      var speedText = $(ui.speedSelector).val();
+      $(ui.speedText).text(speedText);
     };
 
-    $(ui.speedSelector).on('input', updateSpeed );
+    $(ui.speedSelector).on('input', updateSpeedText );
 
-    var startState = new Sudoku(sudokuBoards.board2);
+    var startState = new Sudoku(sudokuBoards.board3);
     var DFSModule = new DepthFirstSearchModule(startState);
     DFSModule.search();
   }
