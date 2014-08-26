@@ -182,6 +182,10 @@
             var $blockHtml = $('<div></div>').addClass('block')
                                              .addClass('col' + col)
                                              .html('<p>' + elString + '</p>');
+
+            if (_.isNumber(this.startState.board[row][col])){
+              $blockHtml.addClass('original');
+            }
             $rowHtml.append($blockHtml);
           }
           $html.append($rowHtml);
@@ -197,6 +201,7 @@
 
       this.__init__ = function() {
         this.nodesExplored = 0;
+        this.startState = startState;
       };
       this.__init__();
 

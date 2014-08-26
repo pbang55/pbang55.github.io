@@ -37,6 +37,12 @@ body {
   display: inline-block;
   border-left: 1px solid black;
   border-top: 1px solid black;
+  color: red;
+}
+
+.block.original {
+  color: #333;
+  font-weight: bold;
 }
 
 .row0 .block, .row3 .block, .row6 .block {
