@@ -187,10 +187,10 @@
           $html.append($rowHtml);
         }
 
-        $nodesHtml = $('<div></div>').addClass('nodes-explored')
-                                     .html('<p>Nodes Explored: ' + this.nodesExplored + '</p>');
+        $statesHtml = $('<div></div>').addClass('states-explored')
+                                     .html('<p>States Explored: ' + this.nodesExplored + '</p>');
 
-        $html.append($nodesHtml);
+        $html.append($statesHtml);
         $(Settings.ui.sudokuContainer).html($html);
 
       }
@@ -209,6 +209,7 @@
 
       this.stopSearch = function() {
         clearInterval(this.id);
+        this.nodesExplored = 0;
       }
     }
 
@@ -227,13 +228,6 @@
 
     this._reset = function() {
       this.DFSModule.stopSearch();
-      this.DFSModule.nodesExplored = 0;
-      this.DFSModule._printState(this.startState);
-    }
-
-    this._initializeBoard = function(boardKey) {
-      this.startState = new this.Sudoku(Settings.sudokuBoards[boardKey]);
-      this.DFSModule = new this.DepthFirstSearchModule(this.startState);
       this.DFSModule._printState(this.startState);
     }
 
@@ -243,18 +237,24 @@
       this._initializeBoard(boardKey);
     }
 
-    this.initialize = function(){
+    this._initializeBoard = function(boardKey) {
+      this.startState = new this.Sudoku(Settings.sudokuBoards[boardKey]);
+      this.DFSModule = new this.DepthFirstSearchModule(this.startState);
+      this.DFSModule._printState(this.startState);
+    }
 
-      this._initializeBoard('board1');
-
+    this._initializeUI = function() {
       $(Settings.ui.speedSelector).on('input', this._updateSpeedText );
       $(Settings.ui.startButton).on('click', this._start.bind(this) );    
       $(Settings.ui.resetButton).on('click', this._reset.bind(this) );
       $(Settings.ui.boardOptions).on('change', this._changeBoard.bind(this) );  
     }
+
+    this.initialize = function(){
+      this._initializeBoard( _.keys(Settings.sudokuBoards)[0] );
+      this._initializeUI();
+    }
   };
-
-
 
   var application = new Application();
   application.initialize();
