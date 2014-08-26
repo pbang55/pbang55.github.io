@@ -221,6 +221,7 @@
     };
 
     this._start = function() {
+      this._reset();
       this.DFSModule.search();
     }
 
