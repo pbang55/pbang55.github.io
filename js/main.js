@@ -98,7 +98,7 @@
           col = this._getColNums(empty),
           box = this._getBoxNums(empty);
       _.remove(values, function(v){
-        return _.indexOf(_.union(row, col, box), v) != -1;
+        return _.indexOf(row, v) != -1 || _.indexOf(col, v) != -1 || _.indexOf(box, v) != -1;
       });
       return values;
     }
