@@ -170,11 +170,15 @@
 
     }
 
+    this.__init__ = function() {
+      this.nodesExplored = 0;
+      this.INTERVAL = 100;
+    };
+    this.__init__();
+
     this.search = function() {
       this.fringe = [startState];
       this.currentState = null;
-      this.nodesExplored = 0;
-      this.INTERVAL = 100;
 
       this.id = setInterval( this._exploreNodes.bind(this), this.INTERVAL );
     }
@@ -186,7 +190,7 @@
       $(ui.speedText).text(speedText);
     };
 
-    var startState = new Sudoku(sudokuBoards.board1);
+    var startState = new Sudoku(sudokuBoards.board3);
     var DFSModule = new DepthFirstSearchModule(startState);
     DFSModule._printState(startState);
 

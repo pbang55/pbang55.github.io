@@ -29,7 +29,12 @@
 
     <div id="actions-container">
       <input id="speed-selector" type="range" min="10" max="10000" step="10" value="10">
-      <p>You are currently exploring <span id="speed">10</span> nodes per second.</p>
+      <p>Exploring <span id="speed">10</span> nodes per second.</p>
+      <form id="board-selector">
+        <label><input type="radio" name="board" value="board1"> Board1</label>
+        <label><input type="radio" name="board" value="board2"> Board2</label>
+        <label><input type="radio" name="board" value="board3"> Board3</label>
+      </form>
       <button id="start-button" type="button">Start!</button>
     </div>
 

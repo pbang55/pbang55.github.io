@@ -1,5 +1,5 @@
 body {
-  background-color: #eee;
+  background-color: #C5D4E3;
 }
 
 #header {
@@ -20,6 +20,14 @@ body {
 
 #speed-selector {
   width: 100%;
+}
+
+#board-selector {
+  float:left;
+}
+
+#start-button {
+  float: right;
 }
 
 .block {
