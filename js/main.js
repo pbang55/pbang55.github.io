@@ -5,6 +5,7 @@
       sudokuContainer: '#sudoku-container',
       speedText: '#speed',
       speedSelector: '#speed-selector',
+      boardOptions: 'input[name=board]',
       startButton: '#start-button',
       resetButton: '#reset-button'
     },
@@ -211,15 +212,25 @@
       this.DFSModule._printState(this.startState);
     }
 
-    this.initialize = function(){
-
-      this.startState = new this.Sudoku(Settings.sudokuBoards.board1);
+    this._initializeBoard = function(boardKey) {
+      this.startState = new this.Sudoku(Settings.sudokuBoards[boardKey]);
       this.DFSModule = new this.DepthFirstSearchModule(this.startState);
       this.DFSModule._printState(this.startState);
+    }
+
+    this._changeBoard = function() {
+      this._reset();
+      var boardKey = $(Settings.ui.boardOptions + ':checked').val();
+    }
+
+    this.initialize = function(){
+
+      this._initializeBoard(Settings.sudokuBoards.board1);
 
       $(Settings.ui.speedSelector).on('input', this._updateSpeedText );
       $(Settings.ui.startButton).on('click', this._start.bind(this) );    
-      $(Settings.ui.resetButton).on('click', this._reset.bind(this) );    
+      $(Settings.ui.resetButton).on('click', this._reset.bind(this) );
+      $(Settings.ui.boardOptions).on('change', this._changeBoard.bind(this) );  
     }
   };
 
