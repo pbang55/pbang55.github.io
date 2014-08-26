@@ -221,11 +221,12 @@
     this._changeBoard = function() {
       this._reset();
       var boardKey = $(Settings.ui.boardOptions + ':checked').val();
+      this._initializeBoard(boardKey);
     }
 
     this.initialize = function(){
 
-      this._initializeBoard(Settings.sudokuBoards.board1);
+      this._initializeBoard('board1');
 
       $(Settings.ui.speedSelector).on('input', this._updateSpeedText );
       $(Settings.ui.startButton).on('click', this._start.bind(this) );    
