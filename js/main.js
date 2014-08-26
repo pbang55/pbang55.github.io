@@ -1,6 +1,8 @@
 (function($, _){
 
   var Settings = {
+    INTERVAL: 100,
+
     ui: {
       sudokuContainer: '#sudoku-container',
       speedText: '#speed',
@@ -156,7 +158,7 @@
 
       this._exploreNodes = function(){
         var speed = parseInt( $('#speed-selector').val() );
-        var numberOfNodes = speed * this.INTERVAL / 1000;
+        var numberOfNodes = speed * Settings.INTERVAL / 1000;
         for (var x = 0; x < numberOfNodes; x += 1) {
 
           var result = this._exploreNode();
@@ -195,7 +197,6 @@
 
       this.__init__ = function() {
         this.nodesExplored = 0;
-        this.INTERVAL = 100;
       };
       this.__init__();
 
@@ -203,7 +204,7 @@
         this.fringe = [startState];
         this.currentState = null;
 
-        this.id = setInterval( this._exploreNodes.bind(this), this.INTERVAL );
+        this.id = setInterval( this._exploreNodes.bind(this), Settings.INTERVAL );
       }
 
       this.stopSearch = function() {
