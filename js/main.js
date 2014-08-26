@@ -175,11 +175,10 @@
       this.currentState = null;
       this.nodesExplored = 0;
       this.INTERVAL = 100;
+
       this.id = setInterval( this._exploreNodes.bind(this), this.INTERVAL );
     }
   }
-
-
 
   function initialize() {
     function updateSpeedText(){
@@ -187,11 +186,13 @@
       $(ui.speedText).text(speedText);
     };
 
+    var startState = new Sudoku(sudokuBoards.board1);
+    var DFSModule = new DepthFirstSearchModule(startState);
+    DFSModule._printState(startState);
+
     $(ui.speedSelector).on('input', updateSpeedText );
 
-    var startState = new Sudoku(sudokuBoards.board3);
-    var DFSModule = new DepthFirstSearchModule(startState);
-    DFSModule.search();
+    $(ui.startButton).on('click', DFSModule.search.bind(DFSModule) );    
   }
 
   initialize();
