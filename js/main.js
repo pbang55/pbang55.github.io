@@ -11,33 +11,50 @@
     },
 
     sudokuBoards: {
-      board1: [[1, null, null, null, null, null, 4, null, null],
-        [7, 3, 9, null, 8, null, 2, null, null],
-        [6, null, 4, 3, null, null, null, null, null],
-        [null, null, 2, 5, null, null, 7, null, 9],
-        [null, 9, 1, 7, null, 4, 3, 6, null],
-        [8, null, 3, null, null, 6, 5, null, null],
-        [null, null, null, null, null, 7, 6, null, 3],
-        [null, null, 7, null, 6, null, 8, 9, 2],
-        [null, null, 6, null, null, null, null, null, 5]],
-      board2: [[null, null, null, null, null, 8, 9, null, 2],
-        [6, null, 4, 3, null, null, null, null, null],
-        [null, null, null, 5, 9, null, null, null, null],
-        [null, null, 5, 7, null, 3, null, null, 9],
-        [7, null, null, null, 4, null, null, null, null],
-        [null, null, 9, null, null, null, 3, null, 5],
-        [null, 8, null, null, null, 4, null, null, null],
-        [null, 4, 1, null, null, null, null, 3, null],
-        [2, null, null, 1, 5, null, null, null, null]],
-      board3: [[null, 9, 8, null, null, null, 4, 7, null],
-        [null, null, null, null, null, null, 1, null, 5],
-        [null, null, null, 7, null, null, 9, 6, null],
-        [null, 6, null, null, null, null, null, 9, null],
-        [null, null, null, 1, null, null, null, 2, null],
-        [null, null, 3, null, 2, 4, null, null, null],
-        [4, null, null, null, null, null, null, null, 8],
-        [2, null, null, null, 5, 9, null, null, null],
-        [null, null, null, null, 7, null, null, 1, null]]
+      board1: [
+        [6,null,null,null,null,5,null,3,null],
+        [4,8,null,2,7,null,null,null,null],
+        [null,null,null,8,null,1,null,null,9],
+        [null,null,null,null,1,null,8,4,null],
+        [9,4,null,null,3,null,null,1,5],
+        [null,3,1,null,2,null,null,null,null],
+        [3,null,null,6,null,2,null,null,null],
+        [null,null,null,null,5,7,null,8,2],
+        [null,5,null,1,null,null,null,null,6]
+      ],
+      board2: [
+        [1,null,null,null,null,null,4,null,null],
+        [7,3,9,null,8,null,2,null,null],
+        [6,null,4,3,null,null,null,null,null],
+        [null,null,2,5,null,null,7,null,9],
+        [null,9,1,7,null,4,3,6,null],
+        [8,null,3,null,null,6,5,null,null],
+        [null,null,null,null,null,7,6,null,3],
+        [null,null,7,null,6,null,8,9,2],
+        [null,null,6,null,null,null,null,null,5]
+      ],
+      board3: [
+        [null,null,null,8,null,null,null,null,5],
+        [3,7,null,null,null,null,null,8,null],
+        [null,null,null,4,null,null,null,null,7],
+        [8,null,7,6,null,2,null,1,3],
+        [null,2,null,null,null,null,null,4,null],
+        [5,1,null,3,null,4,2,null,8],
+        [2,null,null,null,null,6,null,null,null],
+        [null,8,null,null,null,null,null,5,4],
+        [9,null,null,null,null,3,null,null,null]
+      ],
+      board4: [
+        [null,9,8,null,null,null,4,7,null],
+        [null,null,null,null,null,null,1,null,5],
+        [null,null,null,7,null,null,9,6,null],
+        [null,6,null,null,null,null,null,9,null],
+        [null,null,null,1,null,null,null,2,null],
+        [null,null,3,null,2,4,null,null,null],
+        [4,null,null,null,null,null,null,null,8],
+        [2,null,null,null,5,9,null,null,null],
+        [null,null,null,null,7,null,null,1,null]
+      ]
     }
   }
 
