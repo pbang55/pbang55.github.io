@@ -5,8 +5,10 @@
       sudokuContainer: '#sudoku-container',
       speedText: '#speed',
       speedSelector: '#speed-selector',
-      startButton: '#start-button'
+      startButton: '#start-button',
+      resetButton: '#reset-button'
     },
+
     sudokuBoards: {
       board1: [[1, null, null, null, null, null, 4, null, null],
         [7, 3, 9, null, 8, null, 2, null, null],
@@ -194,20 +196,34 @@
     this.startState = null;
     this.DFSModule = null;
 
+    this._updateSpeedText = function(){
+      var speedText = $(Settings.ui.speedSelector).val();
+      $(Settings.ui.speedText).text(speedText);
+    };
+
+    this._start = function() {
+      this.DFSModule.search();
+    }
+
+    this._reset = function() {
+      this.DFSModule.stopSearch();
+      this.DFSModule.nodesExplored = 0;
+      this.DFSModule._printState(this.startState);
+    }
+
     this.initialize = function(){
-      function updateSpeedText(){
-        var speedText = $(Settings.ui.speedSelector).val();
-        $(Settings.ui.speedText).text(speedText);
-      };
 
       this.startState = new this.Sudoku(Settings.sudokuBoards.board1);
       this.DFSModule = new this.DepthFirstSearchModule(this.startState);
       this.DFSModule._printState(this.startState);
 
-      $(Settings.ui.speedSelector).on('input', updateSpeedText );
-      $(Settings.ui.startButton).on('click', this.DFSModule.search.bind(this.DFSModule) );    
+      $(Settings.ui.speedSelector).on('input', this._updateSpeedText );
+      $(Settings.ui.startButton).on('click', this._start.bind(this) );    
+      $(Settings.ui.resetButton).on('click', this._reset.bind(this) );    
     }
   };
+
+
 
   var application = new Application();
   application.initialize();
