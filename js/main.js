@@ -207,6 +207,7 @@
 
       this.search = function() {
         this.fringe = [startState];
+        this.nodesExplored = 0;
         this.currentState = null;
 
         this.id = setInterval( this._exploreNodes.bind(this), Settings.INTERVAL );
@@ -214,7 +215,6 @@
 
       this.stopSearch = function() {
         clearInterval(this.id);
-        this.nodesExplored = 0;
       }
     }
 
