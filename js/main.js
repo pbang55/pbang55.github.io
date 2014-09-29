@@ -79,7 +79,8 @@
           var successor = this._getSuccessor(empty, val);
           successors.push(successor);
         }
-        return successors.reverse();
+
+        return _.filter( successors.reverse(), function(successor) { return successor._forwardCheck() } );
       }
 
       this._getFirstEmpty = function() {
@@ -126,6 +127,18 @@
           return _.indexOf(row, v) != -1 || _.indexOf(col, v) != -1 || _.indexOf(box, v) != -1;
         });
         return values;
+      }
+
+      this._forwardCheck = function() {
+        for (var row = 0; row < 9; row += 1){
+          for (var col = 0; col < 9; col += 1) {
+            // debugger
+            if (!this.board[row][col] && this._getPossibleVals({row: row, col: col}).length == 0 ) {
+              return false;
+            }
+          }
+        }
+        return true;
       }
 
       this._getSuccessor = function(empty, val) {
