@@ -70,7 +70,8 @@
       this.__init__();
 
       this.getSuccessors = function() {
-        var empty = this._getFirstEmpty();
+        // var empty = this._getFirstEmpty();
+        var empty = this._getMostConstrainedEmpty();
         var possibleVals = this._getPossibleVals(empty);
 
         var successors = [];
@@ -81,6 +82,26 @@
         }
 
         return _.filter( successors.reverse(), function(successor) { return successor._forwardCheck() } );
+      }
+
+      this._getMostConstrainedEmpty = function() {
+        minConstraint = Infinity;
+        mostConstrainedEmpty = null;
+        for (var row = 0; row < 9; row += 1){
+          for (var col = 0; col < 9; col += 1) {
+            if (this.board[row][col] === null){
+              possibleVals = this._getPossibleVals({row: row, col: col});
+              if (possibleVals.length < minConstraint) {
+                minConstraint = possibleVals.length;
+                mostConstrainedEmpty = {row: row, col: col};
+                if (minConstraint == 1) {
+                  return mostConstrainedEmpty;
+                }
+              }
+            }
+          }
+        }
+        return mostConstrainedEmpty;
       }
 
       this._getFirstEmpty = function() {
